@@ -1,0 +1,25 @@
+
+#1
+!pip install --upgrade gensim scipy
+
+from gensim.models.fasttext import load_facebook_model
+from gensim.models import KeyedVectors
+
+# Load FastText model
+fasttext_model = load_facebook_model("/kaggle/input/cc-en-300-bin/cc.en.300.bin")
+print("FastText Loaded")
+print(fasttext_model.wv['prince'])
+
+# Load Word2Vec model
+word2vec_model = KeyedVectors.load_word2vec_format("/kaggle/input/google-word2vec/GoogleNews-vectors-negative300.bin", binary=True)
+print("Word2Vec Loaded")
+print(word2vec_model['queen'])
+
+# Vector operations
+king, queen = fasttext_model.wv["king"], fasttext_model.wv["queen"]
+man, woman = fasttext_model.wv["man"], fasttext_model.wv["woman"]
+print("King vector:", king[:5])
+print("Queen vector:", queen[:5])
+
+similar_words = fasttext_model.wv.similar_by_vector(king + woman, topn=5)
+print("Closest words to (king + woman):", similar_words)
